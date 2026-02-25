@@ -1,0 +1,113 @@
+/* ============================================================
+   AuthPages.css — Login & Register Page Styles
+   ============================================================ */
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-lg) var(--space-md);
+  min-height: 70vh;
+  align-items: flex-start;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  border: 1px solid var(--color-border);
+}
+
+.auth-title {
+  font-size: 1.5rem;
+  margin: 0 0 var(--space-xs);
+  text-align: center;
+}
+
+.auth-subtitle {
+  text-align: center;
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-lg);
+  font-size: 0.95rem;
+}
+
+.auth-error {
+  padding: var(--space-sm) var(--space-md);
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: var(--radius);
+  color: var(--color-error);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.auth-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.auth-input {
+  padding: 14px 16px;
+  font-size: 16px; /* 16px prevents iOS zoom */
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.2s;
+  /* Large touch target */
+  min-height: 50px;
+}
+
+.auth-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.auth-submit {
+  padding: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  background: var(--color-primary);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  min-height: 56px;
+  touch-action: manipulation;
+  margin-top: var(--space-sm);
+}
+
+.auth-submit:active {
+  transform: scale(0.98);
+}
+
+.auth-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-switch {
+  text-align: center;
+  margin: var(--space-lg) 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.auth-switch a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}

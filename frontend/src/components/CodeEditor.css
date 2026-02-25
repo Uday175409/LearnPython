@@ -1,0 +1,76 @@
+/* ============================================================
+   CodeEditor.css — Mobile-First Code Editor Styles
+   ============================================================ */
+
+.code-editor-wrapper {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: #1d1f21;
+  margin: var(--space-md) 0;
+}
+
+.code-editor-container {
+  max-height: 300px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.code-editor {
+  background: #1d1f21 !important;
+  color: #c5c8c6 !important;
+}
+
+/* Make the textarea easy to tap on mobile */
+.code-editor-textarea {
+  outline: none !important;
+  border: none !important;
+  /* Prevent iOS zoom on focus by keeping font at 16px */
+  font-size: 16px !important;
+  /* Prevent autocorrect/autocapitalize on phone keyboards */
+  autocorrect: off;
+  autocapitalize: none;
+  spellcheck: false;
+}
+
+/* ── Sticky Run Button ───────────────────────────────────── */
+
+.code-editor-actions {
+  padding: var(--space-sm);
+  background: #2d2f33;
+  border-top: 1px solid #444;
+  /* Sticky at bottom of editor, not viewport */
+  position: sticky;
+  bottom: 0;
+}
+
+.run-button {
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  background: var(--color-primary);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  /* Large touch target for mobile (minimum 48px) */
+  min-height: 50px;
+  transition: background 0.2s;
+  /* Prevent double-tap zoom */
+  touch-action: manipulation;
+}
+
+.run-button:active {
+  background: var(--color-primary-dark);
+  transform: scale(0.98);
+}
+
+.run-button.running {
+  background: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+.run-button:disabled {
+  opacity: 0.7;
+}

@@ -1,0 +1,24 @@
+# ============================================================
+# LearnPython Backend — Dependencies (Django)
+# ============================================================
+
+# Django framework
+django==5.2.11
+gunicorn==23.0.0
+
+# REST API
+djangorestframework==3.16.1
+djangorestframework-simplejwt==5.5.1
+
+# CORS headers
+django-cors-headers==4.9.0
+
+# Environment variables
+python-dotenv==1.0.1
+
+# PostgreSQL for production (Render)
+dj-database-url==2.3.0
+psycopg2-binary==2.9.10
+
+# Password hashing (used by Django auth)
+bcrypt==4.0.1

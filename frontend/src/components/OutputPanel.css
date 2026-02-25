@@ -1,0 +1,126 @@
+/* ============================================================
+   OutputPanel.css — Output Display Styles
+   ============================================================ */
+
+.output-panel {
+  margin: var(--space-md) 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.output-panel.has-output {
+  border-color: var(--color-success);
+}
+
+.output-panel.has-error {
+  border-color: var(--color-error);
+}
+
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.output-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.output-time {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.output-text {
+  padding: var(--space-md);
+  margin: 0;
+  font-family: "Fira Code", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #1d1f21;
+  color: #c5c8c6;
+  max-height: 250px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.output-empty {
+  padding: var(--space-md);
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin: 0;
+}
+
+.output-empty code {
+  background: var(--color-border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* ── Friendly Error ──────────────────────────────────────── */
+
+.output-friendly-error {
+  padding: var(--space-md);
+  background: #fff5f5;
+  color: #333;
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.output-friendly-error strong {
+  color: var(--color-error);
+}
+
+.output-friendly-error code {
+  background: #ffe0e0;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.output-friendly-error pre {
+  background: #1d1f21;
+  color: #c5c8c6;
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  font-size: 0.85rem;
+}
+
+/* ── Raw Error Details ───────────────────────────────────── */
+
+.output-raw-error {
+  border-top: 1px solid var(--color-border);
+}
+
+.output-raw-error summary {
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  /* Large tap target */
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.output-error-text {
+  padding: var(--space-sm) var(--space-md);
+  margin: 0;
+  font-family: "Fira Code", "Courier New", monospace;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #2d1f1f;
+  color: #f88;
+  max-height: 150px;
+  overflow-y: auto;
+}

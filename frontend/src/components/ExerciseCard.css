@@ -1,0 +1,225 @@
+/* ============================================================
+   ExerciseCard.css — Exercise Widget Styles
+   ============================================================ */
+
+.exercise-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin: var(--space-xl) 0;
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.exercise-title {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--color-primary);
+  line-height: 1.3;
+}
+
+.difficulty-badge {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.difficulty-badge.easy {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.difficulty-badge.medium {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.difficulty-badge.challenge {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* ── Instructions ────────────────────────────────────────── */
+
+.exercise-instructions {
+  line-height: 1.7;
+  font-size: 0.95rem;
+  margin-bottom: var(--space-md);
+}
+
+.exercise-instructions code {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.exercise-instructions pre {
+  background: #1d1f21;
+  color: #c5c8c6;
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* ── Submit Button ───────────────────────────────────────── */
+
+.submit-button {
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  background: var(--color-success);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  min-height: 50px;
+  margin: var(--space-sm) 0;
+  touch-action: manipulation;
+  transition: background 0.2s;
+}
+
+.submit-button:active {
+  transform: scale(0.98);
+}
+
+.submit-button.correct {
+  background: #16a34a;
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* ── Submit Result ───────────────────────────────────────── */
+
+.submit-result {
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  margin: var(--space-md) 0;
+  line-height: 1.7;
+}
+
+.submit-result.correct {
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+}
+
+.submit-result.incorrect {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+}
+
+.submit-result code {
+  font-size: 0.9em;
+}
+
+.submit-result pre {
+  background: #1d1f21;
+  color: #c5c8c6;
+  padding: var(--space-sm);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  font-size: 0.85rem;
+}
+
+.submit-error-explanation {
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+/* ── Help Buttons ────────────────────────────────────────── */
+
+.exercise-help {
+  display: flex;
+  gap: var(--space-sm);
+  margin: var(--space-md) 0;
+  flex-wrap: wrap;
+}
+
+.help-button {
+  flex: 1;
+  min-width: 140px;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--color-text);
+  min-height: 48px;
+  touch-action: manipulation;
+}
+
+.help-button:active {
+  background: var(--color-border);
+}
+
+/* ── Hint Box ────────────────────────────────────────────── */
+
+.hint-box {
+  padding: var(--space-md);
+  background: #eff6ff;
+  border: 1px solid #93c5fd;
+  border-radius: var(--radius);
+  margin-bottom: var(--space-md);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.hint-box p {
+  margin: 0;
+}
+
+/* ── Solution Box ────────────────────────────────────────── */
+
+.solution-box {
+  padding: var(--space-md);
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: var(--radius);
+  margin-bottom: var(--space-md);
+}
+
+.solution-box h4 {
+  margin: 0 0 var(--space-xs);
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.solution-code {
+  background: #1d1f21;
+  color: #c5c8c6;
+  padding: var(--space-md);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  font-family: "Fira Code", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: var(--space-sm) 0;
+}
+
+.solution-explanation {
+  margin: var(--space-sm) 0 0;
+  line-height: 1.7;
+  font-size: 0.9rem;
+  color: #555;
+}

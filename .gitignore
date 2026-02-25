@@ -1,0 +1,86 @@
+##################################
+# 🧠 OS & Editor junk
+##################################
+.DS_Store
+Thumbs.db
+desktop.ini
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*.log
+
+##################################
+# 🐍 Python
+##################################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+.env
+.venv/
+venv/
+ENV/
+env/
+
+##################################
+# Django
+##################################
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+##################################
+# 🧪 Testing & Coverage
+##################################
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+##################################
+# 📦 Node / React
+##################################
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+dist/
+build/
+.cache/
+
+##################################
+# 🔐 Environment & Secrets
+##################################
+.env
+.env.*
+*.key
+*.pem
+
+##################################
+# 🐳 Docker
+##################################
+*.pid
+docker-compose.override.yml
+
+##################################
+# 🧠 Misc
+##################################
+*.bak
+*.tmp
+*.old
+*.orig
+
+##################################
+# 🚀 Deployment (Render / Vercel)
+##################################
+.vercel/
+.render/

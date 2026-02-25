@@ -1,0 +1,141 @@
+/* ============================================================
+   Header.css — Mobile-first header styles
+   ============================================================ */
+
+.header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 var(--space-md);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header-logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+/* ── Hamburger Button ──────────────────────────────────────── */
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 110;
+}
+
+.hamburger-line {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--color-text);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.hamburger-line.open:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-line.open:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-line.open:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ── Mobile Nav (hidden by default) ────────────────────────── */
+
+.header-nav {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 56px;
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-md);
+  gap: var(--space-sm);
+  z-index: 99;
+}
+
+.header-nav.open {
+  display: flex;
+}
+
+.nav-link {
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius);
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.nav-link:active {
+  background: var(--color-border);
+}
+
+.nav-cta {
+  background: var(--color-primary);
+  color: white;
+  text-align: center;
+  border-radius: var(--radius);
+}
+
+.nav-cta:active {
+  background: var(--color-primary-dark);
+}
+
+.nav-logout {
+  color: var(--color-error);
+}
+
+/* ── Desktop (tablets and larger) ──────────────────────────── */
+
+@media (min-width: 768px) {
+  .hamburger {
+    display: none;
+  }
+
+  .header-nav {
+    display: flex;
+    flex-direction: row;
+    position: static;
+    background: none;
+    border: none;
+    padding: 0;
+    gap: var(--space-xs);
+    align-items: center;
+  }
+
+  .nav-link {
+    padding: var(--space-xs) var(--space-sm);
+    width: auto;
+    font-size: 0.9rem;
+  }
+}

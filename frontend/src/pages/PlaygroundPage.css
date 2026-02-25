@@ -1,0 +1,42 @@
+/* ============================================================
+   PlaygroundPage.css
+   ============================================================ */
+
+.playground-page {
+  padding: var(--space-lg) var(--space-md);
+  max-width: 700px;
+  margin: 0 auto;
+  padding-bottom: 100px;
+}
+
+.playground-examples {
+  margin-top: var(--space-xl);
+}
+
+.playground-examples h3 {
+  font-size: 1rem;
+  margin: 0 0 var(--space-md);
+}
+
+.example-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.example-chip {
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-family: "Fira Code", "Courier New", monospace;
+  color: var(--color-text);
+  cursor: pointer;
+  min-height: 40px;
+  touch-action: manipulation;
+}
+
+.example-chip:active {
+  background: var(--color-border);
+}
