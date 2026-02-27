@@ -8,11 +8,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # ── Auth ─────────────────────────────────────────────────
-    path("auth/register", views.register),
-    path("auth/login", views.login),
-    path("auth/me", views.me),
-
     # ── Courses & Lessons ────────────────────────────────────
     path("courses", views.list_courses),
     path("courses/<int:course_id>/lessons", views.list_lessons),
@@ -25,8 +20,4 @@ urlpatterns = [
 
     # ── Code Execution ───────────────────────────────────────
     path("run", views.run_code),
-
-    # ── Progress ─────────────────────────────────────────────
-    path("progress", views.get_progress),
-    path("lessons/<int:lesson_id>/complete", views.mark_lesson_complete),
 ]

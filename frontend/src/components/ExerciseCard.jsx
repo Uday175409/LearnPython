@@ -15,10 +15,10 @@ import CodeEditor from "./CodeEditor";
 import OutputPanel from "./OutputPanel";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { runCode, submitExercise, getExerciseSolution } from "../api";
+import { runCode, submitExercise, getExerciseSolution, markLessonComplete } from "../api";
 import "./ExerciseCard.css";
 
-export default function ExerciseCard({ exercise }) {
+export default function ExerciseCard({ exercise, lessonId }) {
   // ── State ─────────────────────────────────────────────────
   const [output, setOutput] = useState(null);
   const [running, setRunning] = useState(false);
@@ -56,6 +56,9 @@ export default function ExerciseCard({ exercise }) {
     try {
       const result = await submitExercise(exercise.id, currentCode);
       setSubmitResult(result);
+      if (result.is_correct && lessonId) {
+        markLessonComplete(lessonId);
+      }
     } catch (err) {
       setSubmitResult({
         is_correct: false,

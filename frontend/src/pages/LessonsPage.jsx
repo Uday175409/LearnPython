@@ -7,7 +7,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getLessons } from "../api";
+import { getLessons, isLessonCompleted } from "../api";
 import "./LessonsPage.css";
 
 export default function LessonsPage() {
@@ -52,7 +52,7 @@ export default function LessonsPage() {
 
       <div className="lesson-list">
         {lessons.map((lesson, index) => {
-          const isCompleted = lesson.is_completed;
+          const isCompleted = isLessonCompleted(lesson.id);
 
           return (
             <div key={lesson.id} className="lesson-item-wrapper">

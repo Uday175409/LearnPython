@@ -1,9 +1,8 @@
 // ============================================================
-// api.js — API Client
+// api.js — API Client (No Authentication)
 // ============================================================
 // All communication with the backend goes through this file.
-// This keeps API logic in one place, making it easy to change
-// the backend URL or add error handling globally.
+// No login or tokens — all endpoints are public.
 // ============================================================
 
 // In production, this points to your Render backend URL.
@@ -11,24 +10,17 @@
 const BASE_URL = import.meta.env.VITE_API_URL || "";
 
 /**
- * Make an API request with automatic token handling.
+ * Make an API request.
  *
  * @param {string} path - API endpoint path (e.g., "/api/courses")
  * @param {object} options - Fetch options (method, body, etc.)
  * @returns {Promise<object>} - Parsed JSON response
  */
 async function request(path, options = {}) {
-  const token = localStorage.getItem("token");
-
   const headers = {
     "Content-Type": "application/json",
     ...options.headers,
   };
-
-  // Attach the JWT token if the user is logged in
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
-  }
 
   const response = await fetch(`${BASE_URL}${path}`, {
     ...options,
@@ -47,40 +39,10 @@ async function request(path, options = {}) {
   const data = await response.json();
 
   if (!response.ok) {
-    // The backend sends error details in the "detail" field
     throw new Error(data.detail || `Request failed: ${response.status}`);
   }
 
   return data;
-}
-
-// ── Auth APIs ───────────────────────────────────────────────
-
-export async function registerUser(username, email, password) {
-  const data = await request("/api/auth/register", {
-    method: "POST",
-    body: JSON.stringify({ username, email, password }),
-  });
-  // Store the token automatically
-  localStorage.setItem("token", data.access_token);
-  return data;
-}
-
-export async function loginUser(username, password) {
-  const data = await request("/api/auth/login", {
-    method: "POST",
-    body: JSON.stringify({ username, password }),
-  });
-  localStorage.setItem("token", data.access_token);
-  return data;
-}
-
-export async function getMe() {
-  return request("/api/auth/me");
-}
-
-export function logout() {
-  localStorage.removeItem("token");
 }
 
 // ── Course & Lesson APIs ────────────────────────────────────
@@ -121,14 +83,31 @@ export async function submitExercise(exerciseId, code) {
   });
 }
 
-// ── Progress APIs ───────────────────────────────────────────
+// ── Progress (localStorage) ─────────────────────────────────
 
-export async function getProgress() {
-  return request("/api/progress");
+const PROGRESS_KEY = "learnpython_progress";
+
+function getCompletedLessons() {
+  try {
+    return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || [];
+  } catch {
+    return [];
+  }
 }
 
-export async function markLessonComplete(lessonId) {
-  return request(`/api/lessons/${lessonId}/complete`, {
-    method: "POST",
-  });
+export function isLessonCompleted(lessonId) {
+  return getCompletedLessons().includes(Number(lessonId));
+}
+
+export function markLessonComplete(lessonId) {
+  const completed = getCompletedLessons();
+  const id = Number(lessonId);
+  if (!completed.includes(id)) {
+    completed.push(id);
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(completed));
+  }
+}
+
+export function getProgress() {
+  return getCompletedLessons();
 }

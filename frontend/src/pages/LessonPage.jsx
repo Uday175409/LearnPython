@@ -7,7 +7,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getLesson, getLessons, markLessonComplete } from "../api";
+import { getLesson, getLessons, markLessonComplete, isLessonCompleted } from "../api";
 import ContentBlock from "../components/ContentBlock";
 import ExerciseCard from "../components/ExerciseCard";
 import "./LessonPage.css";
@@ -33,6 +33,11 @@ export default function LessonPage() {
         const data = await getLesson(lessonId);
         setLesson(data);
 
+        // Check localStorage for completion
+        if (isLessonCompleted(lessonId)) {
+          setCompleted(true);
+        }
+
         // Fetch all lessons in this course to find prev/next
         try {
           const allLessons = await getLessons(data.course_id);
@@ -53,12 +58,8 @@ export default function LessonPage() {
 
   async function handleMarkComplete() {
     setCompleting(true);
-    try {
-      await markLessonComplete(lessonId);
-      setCompleted(true);
-    } catch {
-      // Silently fail — the button will just stay enabled
-    }
+    markLessonComplete(lessonId);
+    setCompleted(true);
     setCompleting(false);
   }
 
@@ -114,7 +115,7 @@ export default function LessonPage() {
             get stuck.
           </p>
           {lesson.exercises.map((exercise) => (
-            <ExerciseCard key={exercise.id} exercise={exercise} />
+            <ExerciseCard key={exercise.id} exercise={exercise} lessonId={lesson.id} />
           ))}
         </div>
       )}

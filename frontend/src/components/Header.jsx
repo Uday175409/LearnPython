@@ -1,25 +1,16 @@
 // ============================================================
-// components/Header.jsx — Top Navigation Bar
+// components/Header.jsx — Top Navigation Bar (No Auth)
 // ============================================================
 // A simple, mobile-friendly header with navigation links.
-// Uses a hamburger menu on mobile (no hover interactions).
+// All links always visible — no login required.
 // ============================================================
 
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 import "./Header.css";
 
 export default function Header() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  function handleLogout() {
-    logout();
-    setMenuOpen(false);
-    navigate("/");
-  }
 
   function handleNavClick() {
     setMenuOpen(false);
@@ -46,43 +37,15 @@ export default function Header() {
 
         {/* Navigation links */}
         <nav className={`header-nav ${menuOpen ? "open" : ""}`}>
-          {user ? (
-            <>
-              <Link to="/courses" className="nav-link" onClick={handleNavClick}>
-                📚 Courses
-              </Link>
-              <Link
-                to="/playground"
-                className="nav-link"
-                onClick={handleNavClick}
-              >
-                🎮 Playground
-              </Link>
-              <Link
-                to="/progress"
-                className="nav-link"
-                onClick={handleNavClick}
-              >
-                📊 Progress
-              </Link>
-              <button className="nav-link nav-logout" onClick={handleLogout}>
-                👋 Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="nav-link" onClick={handleNavClick}>
-                Log In
-              </Link>
-              <Link
-                to="/register"
-                className="nav-link nav-cta"
-                onClick={handleNavClick}
-              >
-                Sign Up Free
-              </Link>
-            </>
-          )}
+          <Link to="/courses" className="nav-link" onClick={handleNavClick}>
+            📚 Courses
+          </Link>
+          <Link to="/playground" className="nav-link" onClick={handleNavClick}>
+            🎮 Playground
+          </Link>
+          <Link to="/progress" className="nav-link" onClick={handleNavClick}>
+            📊 Progress
+          </Link>
         </nav>
       </div>
     </header>

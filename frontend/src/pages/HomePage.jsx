@@ -1,19 +1,14 @@
 // ============================================================
-// pages/HomePage.jsx — Landing Page
+// pages/HomePage.jsx — Landing Page (No Auth)
 // ============================================================
-// The first page visitors see. Explains what the app is,
-// who it's for, and has clear CTA buttons.
-// Designed for mobile-first: large text, big buttons, vertical.
+// The first page visitors see. Direct CTA to start learning.
 // ============================================================
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 import "./HomePage.css";
 
 export default function HomePage() {
-  const { user } = useAuth();
-
   return (
     <div className="home-page">
       {/* Hero Section */}
@@ -26,20 +21,9 @@ export default function HomePage() {
           and curiosity.
         </p>
 
-        {user ? (
-          <Link to="/courses" className="cta-button">
-            📚 Continue Learning
-          </Link>
-        ) : (
-          <div className="cta-group">
-            <Link to="/register" className="cta-button">
-              🚀 Start Learning — Free
-            </Link>
-            <Link to="/login" className="cta-button-secondary">
-              Already have an account? Log in
-            </Link>
-          </div>
-        )}
+        <Link to="/courses" className="cta-button">
+          🚀 Start Learning — Free
+        </Link>
       </section>
 
       {/* Features Section */}
@@ -102,15 +86,13 @@ export default function HomePage() {
       </section>
 
       {/* Bottom CTA */}
-      {!user && (
-        <section className="bottom-cta">
-          <h2>Ready to Start?</h2>
-          <p>It's free. No credit card needed. Just begin.</p>
-          <Link to="/register" className="cta-button">
-            🚀 Create Free Account
-          </Link>
-        </section>
-      )}
+      <section className="bottom-cta">
+        <h2>Ready to Start?</h2>
+        <p>It's free. No account needed. Just begin.</p>
+        <Link to="/courses" className="cta-button">
+          📚 Browse Courses
+        </Link>
+      </section>
     </div>
   );
 }
