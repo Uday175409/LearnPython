@@ -52,37 +52,23 @@ export default function LessonsPage() {
 
       <div className="lesson-list">
         {lessons.map((lesson, index) => {
-          const isLocked = lesson.is_locked;
           const isCompleted = lesson.is_completed;
 
           return (
             <div key={lesson.id} className="lesson-item-wrapper">
-              {isLocked ? (
-                // Locked lesson — not tappable
-                <div className="lesson-item locked">
-                  <div className="lesson-number">{index + 1}</div>
-                  <div className="lesson-info">
-                    <h3 className="lesson-title">{lesson.title}</h3>
-                    <p className="lesson-subtitle">{lesson.subtitle}</p>
-                  </div>
-                  <span className="lesson-status">🔒</span>
+              <Link
+                to={`/lessons/${lesson.id}`}
+                className={`lesson-item ${isCompleted ? "completed" : "available"}`}
+              >
+                <div className="lesson-number">{index + 1}</div>
+                <div className="lesson-info">
+                  <h3 className="lesson-name">{lesson.title}</h3>
+                  <p className="lesson-desc">{lesson.subtitle}</p>
                 </div>
-              ) : (
-                // Unlocked lesson — tappable
-                <Link
-                  to={`/lessons/${lesson.id}`}
-                  className={`lesson-item ${isCompleted ? "completed" : "available"}`}
-                >
-                  <div className="lesson-number">{index + 1}</div>
-                  <div className="lesson-info">
-                    <h3 className="lesson-title">{lesson.title}</h3>
-                    <p className="lesson-subtitle">{lesson.subtitle}</p>
-                  </div>
-                  <span className="lesson-status">
-                    {isCompleted ? "✅" : "→"}
-                  </span>
-                </Link>
-              )}
+                <span className="lesson-status">
+                  {isCompleted ? "✅" : "→"}
+                </span>
+              </Link>
             </div>
           );
         })}

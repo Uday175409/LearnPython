@@ -1,5 +1,5 @@
 /* ============================================================
-   ContentBlock.css — Lesson Content Styles
+   ContentBlock.css — Lesson Content Styles (Modern)
    ============================================================ */
 
 .content-block {
@@ -16,19 +16,28 @@
 
 .content-text p {
   margin: var(--space-sm) 0;
+  color: var(--color-text-secondary);
+}
+
+.content-text h2,
+.content-text h3 {
+  color: var(--color-text);
+  margin-top: var(--space-lg);
 }
 
 .content-text strong {
-  color: var(--color-primary);
+  color: var(--color-primary-dark);
+  font-weight: 600;
 }
 
 .content-text code {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 0.9em;
-  font-family: "Fira Code", "Courier New", monospace;
+  background: var(--color-primary-light);
+  border: 1px solid #c7d2fe;
+  padding: 2px 7px;
+  border-radius: 5px;
+  font-size: 0.88em;
+  font-family: "Fira Code", "Cascadia Code", "Courier New", monospace;
+  color: var(--color-primary-dark);
 }
 
 .content-text table {
@@ -41,28 +50,41 @@
 .content-text th,
 .content-text td {
   border: 1px solid var(--color-border);
-  padding: var(--space-xs) var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
   text-align: left;
+  color: var(--color-text-secondary);
 }
 
 .content-text th {
-  background: var(--color-surface);
+  background: var(--color-surface-hover);
   font-weight: 600;
+  color: var(--color-text);
+}
+
+.content-text li {
+  color: var(--color-text-secondary);
+  margin: var(--space-xs) 0;
+}
+
+.content-text ol,
+.content-text ul {
+  padding-left: var(--space-lg);
 }
 
 /* ── Code Sample Blocks ──────────────────────────────────── */
 
 .code-sample {
-  background: #1d1f21;
-  color: #c5c8c6;
+  background: #1e1e2e;
+  color: #cdd6f4;
   padding: var(--space-md);
   border-radius: var(--radius);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  font-family: "Fira Code", "Courier New", monospace;
+  font-family: "Fira Code", "Cascadia Code", "Courier New", monospace;
   font-size: 14px;
   line-height: 1.6;
   margin: 0;
+  border: 1px solid #313244;
 }
 
 .code-sample.small {
@@ -71,14 +93,14 @@
 }
 
 .code-caption {
-  margin: var(--space-xs) 0 0;
+  margin: 0;
   padding: var(--space-sm) var(--space-md);
-  background: var(--color-surface);
+  background: var(--color-surface-hover);
   border: 1px solid var(--color-border);
   border-top: none;
   border-radius: 0 0 var(--radius) var(--radius);
   font-size: 0.85rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   line-height: 1.5;
 }
 
@@ -88,10 +110,10 @@
   display: flex;
   gap: var(--space-sm);
   padding: var(--space-md);
-  background: #fffbeb;
-  border: 1px solid #fcd34d;
+  background: #fefce8;
+  border: 1px solid #fde047;
   border-radius: var(--radius);
-  border-left: 4px solid #f59e0b;
+  border-left: 4px solid #eab308;
 }
 
 .tip-icon {
@@ -102,18 +124,20 @@
 .tip-body {
   line-height: 1.6;
   font-size: 0.95rem;
-  color: #333;
+  color: #422006;
 }
 
 .tip-body p {
   margin: 0;
+  color: #422006;
 }
 
 .tip-body code {
-  background: #fef3c7;
+  background: #fef08a;
   padding: 2px 6px;
   border-radius: 4px;
   font-size: 0.9em;
+  color: #422006;
 }
 
 /* ── Mistake Blocks ──────────────────────────────────────── */
@@ -129,7 +153,8 @@
 .mistake-header {
   margin: 0 0 var(--space-sm);
   font-size: 1rem;
-  color: #333;
+  font-weight: 600;
+  color: #991b1b;
 }
 
 .mistake-comparison {
@@ -143,14 +168,14 @@
   font-size: 0.8rem;
   font-weight: 600;
   margin-bottom: var(--space-xs);
-  color: #555;
+  color: #7f1d1d;
 }
 
 .mistake-explanation {
   margin: var(--space-sm) 0 0;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: #555;
+  color: #991b1b;
 }
 
 /* On wider screens, show wrong/right side by side */

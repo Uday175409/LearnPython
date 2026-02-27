@@ -1,15 +1,16 @@
 /* ============================================================
-   LessonsPage.css
+   LessonsPage.css — Modern lesson list
    ============================================================ */
 
 .lessons-page {
   padding: var(--space-lg) var(--space-md);
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto;
 }
 
 .back-link {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   color: var(--color-primary);
   text-decoration: none;
   font-size: 0.9rem;
@@ -17,14 +18,17 @@
   margin-bottom: var(--space-md);
   padding: var(--space-xs) 0;
   min-height: 44px;
-  display: flex;
-  align-items: center;
+  transition: color 0.15s var(--ease);
+}
+
+.back-link:hover {
+  color: var(--color-primary-dark);
 }
 
 .lesson-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: 10px;
 }
 
 .lesson-item {
@@ -32,32 +36,39 @@
   align-items: center;
   gap: var(--space-md);
   padding: var(--space-md) var(--space-lg);
-  background: white;
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   text-decoration: none;
   color: inherit;
   min-height: 72px;
-  transition: background 0.15s;
+  transition: box-shadow 0.2s var(--ease), transform 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.lesson-item.available:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+  border-color: var(--color-primary);
 }
 
 .lesson-item.available:active {
-  background: var(--color-surface);
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
 }
 
 .lesson-item.completed {
   border-color: var(--color-success);
-  background: #f0fdf4;
+  background: var(--color-success-light);
 }
 
-.lesson-item.locked {
-  opacity: 0.5;
-  cursor: not-allowed;
+.lesson-item.completed:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 .lesson-number {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: var(--color-primary);
   color: white;
@@ -73,24 +84,21 @@
   background: var(--color-success);
 }
 
-.lesson-item.locked .lesson-number {
-  background: var(--color-text-muted);
-}
-
 .lesson-info {
   flex: 1;
   min-width: 0;
 }
 
-.lesson-title {
+.lesson-name {
   margin: 0 0 2px;
   font-size: 1rem;
   font-weight: 600;
+  color: var(--color-text);
 }
 
-.lesson-subtitle {
+.lesson-desc {
   margin: 0;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--color-text-muted);
   line-height: 1.4;
 }

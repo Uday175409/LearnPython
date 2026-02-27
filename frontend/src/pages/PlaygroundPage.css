@@ -1,10 +1,10 @@
 /* ============================================================
-   PlaygroundPage.css
+   PlaygroundPage.css — Modern playground
    ============================================================ */
 
 .playground-page {
   padding: var(--space-lg) var(--space-md);
-  max-width: 700px;
+  max-width: 720px;
   margin: 0 auto;
   padding-bottom: 100px;
 }
@@ -15,7 +15,9 @@
 
 .playground-examples h3 {
   font-size: 1rem;
+  font-weight: 600;
   margin: 0 0 var(--space-md);
+  color: var(--color-text);
 }
 
 .example-chips {
@@ -30,11 +32,18 @@
   border: 1px solid var(--color-border);
   border-radius: 20px;
   font-size: 0.8rem;
-  font-family: "Fira Code", "Courier New", monospace;
-  color: var(--color-text);
+  font-family: "Fira Code", "Cascadia Code", "Courier New", monospace;
+  color: var(--color-text-secondary);
   cursor: pointer;
   min-height: 40px;
   touch-action: manipulation;
+  transition: border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+
+.example-chip:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
 }
 
 .example-chip:active {

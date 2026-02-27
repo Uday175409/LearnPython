@@ -151,10 +151,6 @@ def list_lessons(request, course_id):
     lesson_list = list(lessons)
     for i, lesson in enumerate(lesson_list):
         is_completed = lesson.id in completed_ids
-        if i == 0:
-            is_locked = False
-        else:
-            is_locked = lesson_list[i - 1].id not in completed_ids
 
         result.append({
             "id": lesson.id,
@@ -163,7 +159,7 @@ def list_lessons(request, course_id):
             "subtitle": lesson.subtitle or "",
             "order": lesson.order,
             "is_completed": is_completed,
-            "is_locked": is_locked,
+            "is_locked": False,
         })
 
     return Response(result)

@@ -7,7 +7,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { getLesson, markLessonComplete } from "../api";
+import { getLesson, getLessons, markLessonComplete } from "../api";
 import ContentBlock from "../components/ContentBlock";
 import ExerciseCard from "../components/ExerciseCard";
 import "./LessonPage.css";
@@ -20,13 +20,29 @@ export default function LessonPage() {
   const [error, setError] = useState("");
   const [completing, setCompleting] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [prevLesson, setPrevLesson] = useState(null);
+  const [nextLesson, setNextLesson] = useState(null);
 
   useEffect(() => {
     async function fetchLesson() {
       setLoading(true);
+      setCompleted(false);
+      setPrevLesson(null);
+      setNextLesson(null);
       try {
         const data = await getLesson(lessonId);
         setLesson(data);
+
+        // Fetch all lessons in this course to find prev/next
+        try {
+          const allLessons = await getLessons(data.course_id);
+          const sorted = allLessons.sort((a, b) => a.order - b.order);
+          const idx = sorted.findIndex((l) => l.id === data.id);
+          if (idx > 0) setPrevLesson(sorted[idx - 1]);
+          if (idx < sorted.length - 1) setNextLesson(sorted[idx + 1]);
+        } catch {
+          // Non-critical — navigation just won't show
+        }
       } catch (err) {
         setError("Unable to load this lesson. Check your connection.");
       }
@@ -120,11 +136,39 @@ export default function LessonPage() {
         </div>
       )}
 
-      {/* Navigation to next lesson - simple approach */}
+      {/* Prev / Next Navigation */}
       <div className="lesson-nav">
+        <div className="lesson-nav-row">
+          {prevLesson ? (
+            <Link
+              to={`/lessons/${prevLesson.id}`}
+              className="lesson-nav-button prev"
+            >
+              <span className="nav-arrow">←</span>
+              <span className="nav-label">Previous</span>
+              <span className="nav-title">{prevLesson.title}</span>
+            </Link>
+          ) : (
+            <div />  /* empty spacer */
+          )}
+
+          {nextLesson ? (
+            <Link
+              to={`/lessons/${nextLesson.id}`}
+              className="lesson-nav-button next"
+            >
+              <span className="nav-arrow">→</span>
+              <span className="nav-label">Next</span>
+              <span className="nav-title">{nextLesson.title}</span>
+            </Link>
+          ) : (
+            <div />  /* empty spacer */
+          )}
+        </div>
+
         <Link
           to={`/courses/${lesson.course_id}/lessons`}
-          className="lesson-nav-button"
+          className="lesson-nav-all"
         >
           📖 Back to All Lessons
         </Link>

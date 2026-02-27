@@ -1,14 +1,14 @@
 /* ============================================================
-   ExerciseCard.css — Exercise Widget Styles
+   ExerciseCard.css — Modern Exercise Widget
    ============================================================ */
 
 .exercise-card {
-  background: white;
+  background: var(--color-surface);
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
   margin: var(--space-xl) 0;
   border: 2px solid var(--color-primary);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
 }
 
 .exercise-header {
@@ -22,32 +22,34 @@
 .exercise-title {
   margin: 0;
   font-size: 1.15rem;
-  color: var(--color-primary);
+  color: var(--color-primary-dark);
   line-height: 1.3;
+  font-weight: 700;
 }
 
 .difficulty-badge {
   flex-shrink: 0;
-  padding: 4px 10px;
+  padding: 4px 12px;
   border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.72rem;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .difficulty-badge.easy {
-  background: #dcfce7;
-  color: #16a34a;
+  background: #d1fae5;
+  color: #065f46;
 }
 
 .difficulty-badge.medium {
   background: #fef3c7;
-  color: #d97706;
+  color: #92400e;
 }
 
 .difficulty-badge.challenge {
   background: #fee2e2;
-  color: #dc2626;
+  color: #991b1b;
 }
 
 /* ── Instructions ────────────────────────────────────────── */
@@ -56,24 +58,31 @@
   line-height: 1.7;
   font-size: 0.95rem;
   margin-bottom: var(--space-md);
+  color: var(--color-text-secondary);
+}
+
+.exercise-instructions p {
+  color: var(--color-text-secondary);
 }
 
 .exercise-instructions code {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: var(--color-primary-light);
+  border: 1px solid #c7d2fe;
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: 5px;
   font-size: 0.9em;
+  color: var(--color-primary-dark);
 }
 
 .exercise-instructions pre {
-  background: #1d1f21;
-  color: #c5c8c6;
+  background: #1e1e2e;
+  color: #cdd6f4;
   padding: var(--space-sm);
   border-radius: var(--radius);
   overflow-x: auto;
   font-size: 0.85rem;
   line-height: 1.6;
+  border: 1px solid #313244;
 }
 
 /* ── Submit Button ───────────────────────────────────────── */
@@ -91,7 +100,12 @@
   min-height: 50px;
   margin: var(--space-sm) 0;
   touch-action: manipulation;
-  transition: background 0.2s;
+  transition: background 0.2s var(--ease), transform 0.1s var(--ease);
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+}
+
+.submit-button:hover {
+  background: #059669;
 }
 
 .submit-button:active {
@@ -99,7 +113,7 @@
 }
 
 .submit-button.correct {
-  background: #16a34a;
+  background: #059669;
 }
 
 .submit-button:disabled {
@@ -116,14 +130,20 @@
   line-height: 1.7;
 }
 
+.submit-result p {
+  color: inherit;
+}
+
 .submit-result.correct {
-  background: #f0fdf4;
-  border: 1px solid #86efac;
+  background: #ecfdf5;
+  border: 1px solid #6ee7b7;
+  color: #065f46;
 }
 
 .submit-result.incorrect {
   background: #fef2f2;
   border: 1px solid #fca5a5;
+  color: #991b1b;
 }
 
 .submit-result code {
@@ -131,18 +151,19 @@
 }
 
 .submit-result pre {
-  background: #1d1f21;
-  color: #c5c8c6;
+  background: #1e1e2e;
+  color: #cdd6f4;
   padding: var(--space-sm);
   border-radius: var(--radius);
   overflow-x: auto;
   font-size: 0.85rem;
+  border: 1px solid #313244;
 }
 
 .submit-error-explanation {
   margin-top: var(--space-sm);
   padding-top: var(--space-sm);
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 /* ── Help Buttons ────────────────────────────────────────── */
@@ -167,6 +188,12 @@
   color: var(--color-text);
   min-height: 48px;
   touch-action: manipulation;
+  transition: background 0.15s var(--ease), border-color 0.15s var(--ease);
+}
+
+.help-button:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-primary);
 }
 
 .help-button:active {
@@ -183,18 +210,20 @@
   margin-bottom: var(--space-md);
   line-height: 1.6;
   font-size: 0.95rem;
+  color: #1e3a5f;
 }
 
 .hint-box p {
   margin: 0;
+  color: #1e3a5f;
 }
 
 /* ── Solution Box ────────────────────────────────────────── */
 
 .solution-box {
   padding: var(--space-md);
-  background: #f0fdf4;
-  border: 1px solid #86efac;
+  background: #ecfdf5;
+  border: 1px solid #6ee7b7;
   border-radius: var(--radius);
   margin-bottom: var(--space-md);
 }
@@ -202,24 +231,26 @@
 .solution-box h4 {
   margin: 0 0 var(--space-xs);
   font-size: 0.95rem;
-  color: #333;
+  font-weight: 600;
+  color: #065f46;
 }
 
 .solution-code {
-  background: #1d1f21;
-  color: #c5c8c6;
+  background: #1e1e2e;
+  color: #cdd6f4;
   padding: var(--space-md);
   border-radius: var(--radius);
   overflow-x: auto;
-  font-family: "Fira Code", "Courier New", monospace;
+  font-family: "Fira Code", "Cascadia Code", "Courier New", monospace;
   font-size: 14px;
   line-height: 1.6;
   margin: var(--space-sm) 0;
+  border: 1px solid #313244;
 }
 
 .solution-explanation {
   margin: var(--space-sm) 0 0;
   line-height: 1.7;
   font-size: 0.9rem;
-  color: #555;
+  color: #065f46;
 }
