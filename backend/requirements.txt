@@ -12,5 +12,8 @@ djangorestframework==3.16.1
 # CORS headers
 django-cors-headers==4.9.0
 
+# Static files serving in production
+whitenoise==6.7.0
+
 # Environment variables
 python-dotenv==1.0.1

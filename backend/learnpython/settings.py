@@ -15,8 +15,8 @@ SECRET_KEY = os.getenv(
     "SECRET_KEY",
     "django-insecure-change-me-in-production-use-a-long-random-string",
 )
-DEBUG = os.getenv("DEBUG", "true").lower() in ("true", "1", "yes")
-ALLOWED_HOSTS = ["*"]
+DEBUG = os.getenv("DEBUG", "false").lower() in ("true", "1", "yes")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
 # ── Applications ─────────────────────────────────────────────
 INSTALLED_APPS = [
@@ -34,6 +34,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -72,8 +73,9 @@ REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "api.utils.custom_exception_handler",
 }
 
-# ── CORS (public API — allow all origins) ────────────────────
-CORS_ALLOW_ALL_ORIGINS = True
+# ── CORS ────────────────────────────────────────────────────────────
+CORS_ALLOW_ALL_ORIGINS = DEBUG  # Allow all in dev, restrict in prod
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if os.getenv("CORS_ALLOWED_ORIGINS") else []
 
 # ── Sandbox ──────────────────────────────────────────────────
 SANDBOX_TIMEOUT_SECONDS = int(os.getenv("SANDBOX_TIMEOUT_SECONDS", "5"))
@@ -87,5 +89,7 @@ USE_TZ = True
 
 # ── Static ───────────────────────────────────────────────────
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
