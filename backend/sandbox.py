@@ -124,8 +124,28 @@ def check_code_safety(code: str) -> Tuple[bool, str]:
     # Check that any import statements only use allowed modules
     for line in code.splitlines():
         stripped = line.strip()
-        if stripped.startswith("import ") or stripped.startswith("from "):
-            # Extract the module name
+
+        # Remove inline comments before parsing
+        if "#" in stripped:
+            stripped = stripped[:stripped.index("#")].strip()
+
+        if not stripped:
+            continue
+
+        if stripped.startswith("import "):
+            # Handle "import mod1, mod2, mod3" syntax
+            modules_part = stripped[len("import "):].strip()
+            module_names = [m.strip().split(".")[0].split(" ")[0]
+                           for m in modules_part.split(",")]
+            for module_name in module_names:
+                if module_name and module_name not in ALLOWED_IMPORTS:
+                    return False, (
+                        f"The module '{module_name}' is not available "
+                        f"in this learning environment. Available modules: "
+                        f"{', '.join(ALLOWED_IMPORTS)}"
+                    )
+        elif stripped.startswith("from "):
+            # Handle "from module import something"
             parts = stripped.split()
             if len(parts) >= 2:
                 module_name = parts[1].split(".")[0]
@@ -321,6 +341,16 @@ async def run_exercise_tests(
             "error": "..."
         }
     """
+    # ── Safety check on student code BEFORE adding test harness ──
+    is_safe, safety_message = check_code_safety(code)
+    if not is_safe:
+        return {
+            "is_correct": False,
+            "test_results": [],
+            "output": "",
+            "error": safety_message,
+        }
+
     if not tests:
         # No tests defined — just run the code
         result = await execute_code(code)
@@ -340,19 +370,10 @@ async def run_exercise_tests(
         test_input = test.get("input", "")
         expected = test.get("expected_output", "").strip()
 
-        # Wrap the code to simulate input()
-        if test_input:
-            # Replace input() calls with values from test_input
-            input_lines = test_input.strip().split("\n")
-            input_setup = (
-                f"import io, sys\n"
-                f"sys.stdin = io.StringIO({repr(test_input)})\n"
-            )
-            test_code = input_setup + code
-        else:
-            test_code = code
-
-        result = await execute_code(test_code)
+        # Build the test code — stdin simulation is added to the
+        # wrapper template, not to the student code, so it doesn't
+        # trip the safety check.
+        result = await _execute_with_stdin(code, test_input)
         actual_output = result["output"].strip()
         last_output = actual_output
         last_error = result["error"]
@@ -377,3 +398,101 @@ async def run_exercise_tests(
         "output": last_output,
         "error": last_error,
     }
+
+
+# ── Wrapper Template for Exercise Tests with stdin ───────────
+WRAPPER_TEMPLATE_STDIN = '''
+import sys
+import io
+
+# Limit recursion to prevent infinite recursion crashes
+sys.setrecursionlimit(200)
+
+# Simulate stdin for test input
+sys.stdin = io.StringIO({stdin_data})
+
+# Capture all print output
+_captured_output = io.StringIO()
+sys.stdout = _captured_output
+sys.stderr = _captured_output
+
+try:
+    # ── Student code begins ──
+{student_code}
+    # ── Student code ends ──
+except Exception as _e:
+    print(f"{{type(_e).__name__}}: {{_e}}", file=sys.stderr)
+
+# Print captured output
+sys.stdout = sys.__stdout__
+sys.stderr = sys.__stderr__
+_result = _captured_output.getvalue()
+if len(_result) > {max_output}:
+    _result = _result[:{max_output}] + "\\n... (output truncated — too much text)"
+print(_result, end="")
+'''
+
+
+async def _execute_with_stdin(code: str, stdin_input: str = "") -> dict:
+    """
+    Execute student code with optional stdin input.
+    Safety check must be done by the caller before using this.
+    """
+    if not stdin_input:
+        return await execute_code(code)
+
+    indented_code = "\n".join(
+        "    " + line for line in code.splitlines()
+    )
+    wrapped_code = WRAPPER_TEMPLATE_STDIN.format(
+        student_code=indented_code,
+        stdin_data=repr(stdin_input),
+        max_output=settings.SANDBOX_MAX_OUTPUT_CHARS,
+    )
+
+    start_time = time.time()
+
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            suffix=".py",
+            delete=False,
+            encoding="utf-8",
+        ) as tmp_file:
+            tmp_file.write(wrapped_code)
+            tmp_path = tmp_file.name
+
+        result = await asyncio.wait_for(
+            asyncio.to_thread(_run_subprocess, tmp_path),
+            timeout=settings.SANDBOX_TIMEOUT_SECONDS,
+        )
+
+        elapsed_ms = int((time.time() - start_time) * 1000)
+        return {
+            "output": result["output"],
+            "error": result["error"],
+            "execution_time_ms": elapsed_ms,
+        }
+
+    except asyncio.TimeoutError:
+        elapsed_ms = int((time.time() - start_time) * 1000)
+        return {
+            "output": "",
+            "error": (
+                "Your code took too long to run and was stopped. "
+                "Check for infinite loops!"
+            ),
+            "execution_time_ms": elapsed_ms,
+        }
+    except Exception as e:
+        elapsed_ms = int((time.time() - start_time) * 1000)
+        return {
+            "output": "",
+            "error": f"Something went wrong while running your code: {str(e)}",
+            "execution_time_ms": elapsed_ms,
+        }
+    finally:
+        try:
+            os.unlink(tmp_path)
+        except Exception:
+            pass

@@ -22,6 +22,8 @@ import "./ContentBlock.css";
  *   - mistake: Common beginner mistake with wrong/right code
  */
 export default function ContentBlock({ block }) {
+  if (!block) return null;
+
   switch (block.type) {
     case "text":
       return (
@@ -39,7 +41,7 @@ export default function ContentBlock({ block }) {
             <code
               dangerouslySetInnerHTML={{
                 __html: Prism.highlight(
-                  block.body,
+                  block.body || "",
                   Prism.languages.python,
                   "python"
                 ),
@@ -75,7 +77,7 @@ export default function ContentBlock({ block }) {
                 <code
                   dangerouslySetInnerHTML={{
                     __html: Prism.highlight(
-                      block.wrong,
+                      block.wrong || "",
                       Prism.languages.python,
                       "python"
                     ),
@@ -89,7 +91,7 @@ export default function ContentBlock({ block }) {
                 <code
                   dangerouslySetInnerHTML={{
                     __html: Prism.highlight(
-                      block.right,
+                      block.right || "",
                       Prism.languages.python,
                       "python"
                     ),

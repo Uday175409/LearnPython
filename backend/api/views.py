@@ -15,6 +15,7 @@
 # ============================================================
 
 import asyncio
+from django.db.models import Count
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
@@ -34,15 +35,7 @@ from error_explainer import explain_error
 
 def _run_async(coro):
     """Run an async coroutine from sync Django view code."""
-    try:
-        loop = asyncio.get_event_loop()
-        if loop.is_running():
-            import concurrent.futures
-            with concurrent.futures.ThreadPoolExecutor() as pool:
-                return pool.submit(asyncio.run, coro).result()
-        return loop.run_until_complete(coro)
-    except RuntimeError:
-        return asyncio.run(coro)
+    return asyncio.run(coro)
 
 
 # ════════════════════════════════════════════════════════════
@@ -53,7 +46,7 @@ def _run_async(coro):
 @permission_classes([AllowAny])
 def list_courses(request):
     """Return all courses, ordered by sequence."""
-    courses = Course.objects.all()
+    courses = Course.objects.annotate(lesson_count=Count("lessons")).all()
     serializer = CourseOutSerializer(courses, many=True)
     return Response(serializer.data)
 

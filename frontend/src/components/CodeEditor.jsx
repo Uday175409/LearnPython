@@ -9,7 +9,7 @@
 //   - No hover interactions
 // ============================================================
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Editor from "react-simple-code-editor";
 import Prism from "prismjs";
 import "prismjs/components/prism-python";
@@ -34,6 +34,11 @@ export default function CodeEditor({
   onCodeChange,
 }) {
   const [code, setCode] = useState(initialCode);
+
+  // Reset code when initialCode changes (e.g., navigating between exercises)
+  useEffect(() => {
+    setCode(initialCode);
+  }, [initialCode]);
 
   // Highlight Python code using PrismJS
   const highlight = useCallback((code) => {
@@ -65,9 +70,10 @@ export default function CodeEditor({
           className="code-editor"
           textareaClassName="code-editor-textarea"
           style={{
-            fontFamily: '"Fira Code", "Courier New", monospace',
+            fontFamily: '"Fira Code", "Courier New", Courier, monospace',
             fontSize: "15px",
             lineHeight: "1.6",
+            letterSpacing: "normal",
             minHeight: "120px",
           }}
           placeholder="# Type your Python code here..."

@@ -22,10 +22,26 @@
   color: #cdd6f4 !important;
 }
 
+/* ── Critical: textarea & pre MUST have identical font props ── */
+.code-editor textarea,
+.code-editor pre,
+.code-editor code,
+.code-editor-textarea {
+  font-family: "Fira Code", "Courier New", Courier, monospace !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  tab-size: 4 !important;
+  -moz-tab-size: 4 !important;
+  white-space: pre-wrap !important;
+  word-break: keep-all !important;
+  overflow-wrap: break-word !important;
+}
+
 .code-editor-textarea {
   outline: none !important;
   border: none !important;
-  font-size: 16px !important;
   autocorrect: off;
   autocapitalize: none;
   spellcheck: false;

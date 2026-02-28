@@ -26,12 +26,13 @@ print(10 * 5)
 export default function PlaygroundPage() {
   const [output, setOutput] = useState(null);
   const [running, setRunning] = useState(false);
+  const [code, setCode] = useState(DEFAULT_CODE);
 
-  async function handleRun(code) {
+  async function handleRun(codeToRun) {
     setRunning(true);
     setOutput(null);
     try {
-      const result = await runCode(code);
+      const result = await runCode(codeToRun);
       setOutput(result);
     } catch (err) {
       setOutput({
@@ -44,6 +45,11 @@ export default function PlaygroundPage() {
     setRunning(false);
   }
 
+  function loadExample(exampleCode) {
+    setCode(exampleCode);
+    setOutput(null);
+  }
+
   return (
     <div className="playground-page">
       <h1 className="page-title">🎮 Python Playground</h1>
@@ -53,7 +59,7 @@ export default function PlaygroundPage() {
       </p>
 
       <CodeEditor
-        initialCode={DEFAULT_CODE}
+        initialCode={code}
         onRun={handleRun}
         running={running}
         buttonLabel="▶ Run Code"
@@ -73,17 +79,20 @@ export default function PlaygroundPage() {
         <div className="example-chips">
           <button
             className="example-chip"
-            onClick={() => {
-              // Cannot set code directly via state from outside
-              // So we provide a hint
-            }}
+            onClick={() => loadExample('print("Hello!")')}
           >
             print("Hello!")
           </button>
-          <button className="example-chip">
+          <button
+            className="example-chip"
+            onClick={() => loadExample("for i in range(5):\n    print(i)")}
+          >
             for i in range(5): print(i)
           </button>
-          <button className="example-chip">
+          <button
+            className="example-chip"
+            onClick={() => loadExample("import math\nprint(math.pi)")}
+          >
             import math; print(math.pi)
           </button>
         </div>

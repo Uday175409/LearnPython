@@ -21,12 +21,11 @@ export default function ProgressPage() {
         const completedIds = getProgress();
         const courses = await getCourses();
 
-        // Get total lesson count from all courses
-        let total = 0;
-        for (const course of courses) {
-          const lessons = await getLessons(course.id);
-          total += lessons.length;
-        }
+        // Fetch all lesson counts in parallel instead of sequentially
+        const lessonArrays = await Promise.all(
+          courses.map((course) => getLessons(course.id))
+        );
+        const total = lessonArrays.reduce((sum, lessons) => sum + lessons.length, 0);
 
         setTotalLessons(total);
         setCompletedCount(completedIds.length);

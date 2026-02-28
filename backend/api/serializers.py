@@ -12,14 +12,11 @@ from .models import Course, Lesson, Exercise
 # ── Course ───────────────────────────────────────────────────
 
 class CourseOutSerializer(serializers.ModelSerializer):
-    lesson_count = serializers.SerializerMethodField()
+    lesson_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Course
         fields = ["id", "title", "description", "order", "icon", "lesson_count"]
-
-    def get_lesson_count(self, obj):
-        return obj.lessons.count()
 
 
 # ── Lesson ───────────────────────────────────────────────────
