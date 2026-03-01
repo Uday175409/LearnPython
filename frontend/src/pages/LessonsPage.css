@@ -8,6 +8,12 @@
   margin: 0 auto;
 }
 
+@media (max-width: 380px) {
+  .lessons-page { padding-left: var(--space-sm); padding-right: var(--space-sm); }
+  .lesson-name { font-size: 0.92rem; }
+  .lesson-number { width: 32px; height: 32px; font-size: 0.8rem; }
+}
+
 .back-link {
   display: inline-flex;
   align-items: center;

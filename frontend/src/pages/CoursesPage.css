@@ -8,6 +8,12 @@
   margin: 0 auto;
 }
 
+@media (max-width: 380px) {
+  .courses-page { padding-left: var(--space-sm); padding-right: var(--space-sm); }
+  .course-title { font-size: 1rem; }
+  .course-icon { font-size: 2rem; }
+}
+
 .course-list {
   display: flex;
   flex-direction: column;

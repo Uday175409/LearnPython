@@ -20,6 +20,12 @@
   box-shadow: var(--shadow-md);
 }
 
+@media (max-width: 380px) {
+  .auth-card { padding: var(--space-lg) var(--space-md); border-radius: var(--radius); }
+  .auth-page { padding: var(--space-md) var(--space-sm); }
+  .auth-title { font-size: 1.3rem; }
+}
+
 .auth-title {
   font-size: 1.5rem;
   font-weight: 800;

@@ -95,6 +95,8 @@
 
 .code-editor-actions {
   padding: var(--space-sm);
+  /* Add safe-area-inset-bottom so the Run button isn't hidden behind the home bar */
+  padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom, 0px));
   background: #181825;
   border-top: 1px solid #313244;
   position: sticky;

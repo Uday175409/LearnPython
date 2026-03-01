@@ -6,7 +6,7 @@
   padding: var(--space-lg) var(--space-md);
   max-width: 720px;
   margin: 0 auto;
-  padding-bottom: 100px;
+  padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px));
 }
 
 .playground-examples {

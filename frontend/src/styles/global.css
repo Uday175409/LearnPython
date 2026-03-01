@@ -142,6 +142,8 @@ button {
 
 .main-content {
   flex: 1;
+  /* Ensure content above iOS home bar */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* ── Loading States ──────────────────────────────────────── */
@@ -193,6 +195,18 @@ button {
   font-weight: 800;
   margin: 0 0 var(--space-xs);
   color: var(--color-text);
+}
+
+/* ── Small phone adjustments (≤380px) ────────────────────── */
+@media (max-width: 380px) {
+  .page-title { font-size: 1.35rem; }
+  h1 { font-size: 1.4rem; }
+  h2 { font-size: 1.2rem; }
+  :root {
+    --space-lg: 20px;
+    --space-xl: 26px;
+    --space-2xl: 36px;
+  }
 }
 
 .page-subtitle {
