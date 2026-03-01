@@ -39,6 +39,14 @@ class _SandboxSettings:
     def SANDBOX_MAX_OUTPUT_CHARS(self):
         return getattr(django_settings, 'SANDBOX_MAX_OUTPUT_CHARS', 5000)
 
+    @property
+    def SANDBOX_MAX_CODE_LENGTH(self):
+        return getattr(django_settings, 'SANDBOX_MAX_CODE_LENGTH', 10000)
+
+    @property
+    def SANDBOX_MAX_MEMORY_BYTES(self):
+        return getattr(django_settings, 'SANDBOX_MAX_MEMORY_BYTES', 64 * 1024 * 1024)
+
 
 settings = _SandboxSettings()
 
@@ -62,6 +70,11 @@ BLOCKED_PATTERNS = [
     "import sqlite3",
     "import ctypes",
     "import importlib",
+    "import threading",
+    "import multiprocessing",
+    "import concurrent",
+    "import signal",
+    "import resource",
     "__import__",
     "eval(",
     "exec(",
@@ -75,12 +88,19 @@ BLOCKED_PATTERNS = [
     "delattr(",
     "__builtins__",
     "__subclasses__",
+    "__class__",
+    "__bases__",
+    "__mro__",
     "os.system",
     "os.popen",
     "subprocess.run",
     "subprocess.Popen",
     "exit(",
     "quit(",
+    # Memory-bomb patterns
+    "bytearray(",
+    "memoryview(",
+    "object.__",
 ]
 
 # ── Allowed Imports ──────────────────────────────────────────
@@ -109,6 +129,22 @@ def check_code_safety(code: str) -> Tuple[bool, str]:
     Returns:
         (is_safe, message) — If not safe, message explains why.
     """
+    # ── Code length guard ────────────────────────────────────
+    max_len = settings.SANDBOX_MAX_CODE_LENGTH
+    if len(code) > max_len:
+        return False, (
+            f"Your code is too long ({len(code):,} characters). "
+            f"Please keep your code under {max_len:,} characters."
+        )
+
+    # ── Line count guard ─────────────────────────────────────
+    lines = code.splitlines()
+    if len(lines) > 500:
+        return False, (
+            f"Your code has too many lines ({len(lines)}). "
+            f"Please keep it under 500 lines."
+        )
+
     # Normalize the code to catch tricks like extra spaces
     normalized = " ".join(code.split())
 
@@ -169,6 +205,15 @@ import io
 # Limit recursion to prevent infinite recursion crashes
 sys.setrecursionlimit(200)
 
+# Limit memory and CPU usage (Linux/Unix only — no-op on Windows)
+try:
+    import resource as _resource
+    _MEM = {max_memory}
+    _resource.setrlimit(_resource.RLIMIT_AS, (_MEM, _MEM))
+    _resource.setrlimit(_resource.RLIMIT_CPU, ({timeout}, {timeout}))
+except Exception:
+    pass
+
 # Capture all print output
 _captured_output = io.StringIO()
 sys.stdout = _captured_output
@@ -178,6 +223,8 @@ try:
     # ── Student code begins ──
 {student_code}
     # ── Student code ends ──
+except MemoryError:
+    print("MemoryError: Your code used too much memory and was stopped.", file=sys.stderr)
 except Exception as _e:
     print(f"{{type(_e).__name__}}: {{_e}}", file=sys.stderr)
 
@@ -219,6 +266,8 @@ async def execute_code(code: str) -> dict:
     wrapped_code = WRAPPER_TEMPLATE.format(
         student_code=indented_code,
         max_output=settings.SANDBOX_MAX_OUTPUT_CHARS,
+        max_memory=settings.SANDBOX_MAX_MEMORY_BYTES,
+        timeout=settings.SANDBOX_TIMEOUT_SECONDS,
     )
 
     # ── Step 3: Write to temp file and execute ───────────────
@@ -408,6 +457,15 @@ import io
 # Limit recursion to prevent infinite recursion crashes
 sys.setrecursionlimit(200)
 
+# Limit memory and CPU usage (Linux/Unix only — no-op on Windows)
+try:
+    import resource as _resource
+    _MEM = {max_memory}
+    _resource.setrlimit(_resource.RLIMIT_AS, (_MEM, _MEM))
+    _resource.setrlimit(_resource.RLIMIT_CPU, ({timeout}, {timeout}))
+except Exception:
+    pass
+
 # Simulate stdin for test input
 sys.stdin = io.StringIO({stdin_data})
 
@@ -420,6 +478,8 @@ try:
     # ── Student code begins ──
 {student_code}
     # ── Student code ends ──
+except MemoryError:
+    print("MemoryError: Your code used too much memory and was stopped.", file=sys.stderr)
 except Exception as _e:
     print(f"{{type(_e).__name__}}: {{_e}}", file=sys.stderr)
 
@@ -448,6 +508,8 @@ async def _execute_with_stdin(code: str, stdin_input: str = "") -> dict:
         student_code=indented_code,
         stdin_data=repr(stdin_input),
         max_output=settings.SANDBOX_MAX_OUTPUT_CHARS,
+        max_memory=settings.SANDBOX_MAX_MEMORY_BYTES,
+        timeout=settings.SANDBOX_TIMEOUT_SECONDS,
     )
 
     start_time = time.time()

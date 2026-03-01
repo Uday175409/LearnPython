@@ -29,6 +29,10 @@ from .serializers import (
 )
 from sandbox import execute_code, run_exercise_tests
 from error_explainer import explain_error
+from django.conf import settings as django_settings
+
+# Maximum code length accepted at the API layer (characters)
+_MAX_CODE_LENGTH = getattr(django_settings, "SANDBOX_MAX_CODE_LENGTH", 10_000)
 
 
 # ── Helpers ──────────────────────────────────────────────────
@@ -144,6 +148,11 @@ def run_code(request):
             {"detail": "No code provided."},
             status=status.HTTP_400_BAD_REQUEST,
         )
+    if len(code) > _MAX_CODE_LENGTH:
+        return Response(
+            {"detail": f"Code is too long. Maximum allowed is {_MAX_CODE_LENGTH:,} characters."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
     result = _run_async(execute_code(code))
 
@@ -175,6 +184,11 @@ def submit_exercise(request, exercise_id):
     if not code:
         return Response(
             {"detail": "No code provided."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    if len(code) > _MAX_CODE_LENGTH:
+        return Response(
+            {"detail": f"Code is too long. Maximum allowed is {_MAX_CODE_LENGTH:,} characters."},
             status=status.HTTP_400_BAD_REQUEST,
         )
 

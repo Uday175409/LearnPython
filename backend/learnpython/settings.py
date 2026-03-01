@@ -80,6 +80,15 @@ CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if os.ge
 # ── Sandbox ──────────────────────────────────────────────────
 SANDBOX_TIMEOUT_SECONDS = int(os.getenv("SANDBOX_TIMEOUT_SECONDS", "5"))
 SANDBOX_MAX_OUTPUT_CHARS = int(os.getenv("SANDBOX_MAX_OUTPUT_CHARS", "5000"))
+# Max characters allowed in a single code submission (prevents oversized payloads)
+SANDBOX_MAX_CODE_LENGTH = int(os.getenv("SANDBOX_MAX_CODE_LENGTH", "10000"))
+# Max memory the sandbox subprocess may use (bytes, Linux/Render only)
+SANDBOX_MAX_MEMORY_BYTES = int(os.getenv("SANDBOX_MAX_MEMORY_BYTES", str(64 * 1024 * 1024)))  # 64 MB
+
+# ── Request size limits ───────────────────────────────────────
+# Reject any POST body larger than 256 KB — code should never be that big.
+DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.getenv("DATA_UPLOAD_MAX_MEMORY_SIZE", str(256 * 1024)))  # 256 KB
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10
 
 # ── i18n ─────────────────────────────────────────────────────
 LANGUAGE_CODE = "en-us"
